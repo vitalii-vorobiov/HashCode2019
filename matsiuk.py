@@ -29,35 +29,60 @@ def get_input(file):
     x,y = file_in(f"in/{file}")
     return x+merge(y)
 
-# print(get_input("a_example.txt"))
+
 
 def score(it1, it2):
     item1 = it1[1]
     item2 = it2[1]
     return min(len(item1.intersection(item2)),len(item1-item2),len(item2-item1))
 
+def chunkIt(seq, num):
+    avg = len(seq) / float(num)
+    out = []
+    last = 0.0
 
-inp_file = get_input("d_pet_pictures.txt")
-overall_res = []
-for first in range(1):
-    unused = deepcopy(inp_file)
-    res = []
-    res.append(unused.pop(first))
+    while last < len(seq):
+        out.append(seq[int(last):int(last + avg)])
+        last += avg
 
-    step_score = 0
-    while len(unused) != 0:
-        maximum = (-1, -1)
-        for i in range(len(unused)):
-            current_score = score(res[-1], unused[i])
-            if current_score > maximum[1]:
-                maximum = (i, current_score)
-
-        popped_value = unused.pop(maximum[0])
-        res.append(popped_value)
-        step_score += maximum[1]
+    return out
 
 
-    overall_res.append((list(map(lambda x:x[0], res)),step_score))
 
-result = max(overall_res, key=lambda x:x[1])
-print(result[1])
+inp = get_input("d_pet_pictures.txt")
+
+
+merged_res=[]
+merged_score=0
+cnt = 0
+for unused in chunkIt(inp, 90):
+    overall_res = []
+    for first in range(1):
+        # unused = deepcopy(inp_file)
+        res = []
+        res.append(unused.pop(first))
+
+        step_score = 0
+        while len(unused) != 0:
+            maximum = (-1, -1)
+            for i in range(len(unused)):
+                current_score = score(res[-1], unused[i])
+                if current_score > maximum[1]:
+                    maximum = (i, current_score)
+
+            popped_value = unused.pop(maximum[0])
+            res.append(popped_value)
+            step_score += maximum[1]
+
+
+        overall_res.append((list(map(lambda x:x[0], res)),step_score))
+
+    result = max(overall_res, key=lambda x:x[1])
+    merged_res+=result[0]
+    merged_score+=result[1]
+    cnt+=1
+    print(cnt)
+
+
+
+print(merged_score)
