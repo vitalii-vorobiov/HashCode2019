@@ -49,13 +49,13 @@ def chunkIt(seq, num):
 
 
 
-inp = get_input("d_pet_pictures.txt")
+inp = get_input("c_memorable_moments.txt")
 
 
 merged_res=[]
 merged_score=0
 cnt = 0
-for unused in chunkIt(inp, 90):
+for unused in chunkIt(inp, 1):
     overall_res = []
     for first in range(1):
         # unused = deepcopy(inp_file)
@@ -85,4 +85,12 @@ for unused in chunkIt(inp, 90):
 
 
 
-print(merged_score)
+f = open("out/result_d.txt", "w")
+
+f.write(str(len(merged_res)))
+f.write("\n")
+
+for item in merged_res:
+    f.write(str(item))
+    f.write("\n")
+# print(merged_res)
