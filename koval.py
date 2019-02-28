@@ -1,4 +1,5 @@
 def main():
+    print("Hermann top coder it ze world")
     pass
 
 
